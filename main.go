@@ -91,7 +91,7 @@ func sgRuleUpdater(dryRun bool, client *ec2.Client, newCidrIpv4 string) {
 			SecurityGroupRuleIds: []string{aws.ToString(r.SecurityGroupRuleId)},
 		})
 		if err != nil {
-			log.Println("ERROR", "Unable to revoke existing rule", aws.ToString(r.SecurityGroupRuleId))
+			log.Println("ERROR", "Unable to revoke existing rule", aws.ToString(r.SecurityGroupRuleId), "due to", err)
 			continue
 		}
 		log.Println("Revoked", aws.ToString(r.CidrIpv4), "under existing rule", aws.ToString(r.SecurityGroupRuleId))
@@ -104,7 +104,7 @@ func sgRuleUpdater(dryRun bool, client *ec2.Client, newCidrIpv4 string) {
 			CidrIp:     aws.String(newCidrIpv4),
 		})
 		if err != nil {
-			log.Println("ERROR", "Unable to authorize new rule")
+			log.Println("ERROR", "Unable to authorize new rule due to", err)
 			continue
 		}
 		newSgRuleId := resp.SecurityGroupRules[0].SecurityGroupRuleId
@@ -120,7 +120,7 @@ func sgRuleUpdater(dryRun bool, client *ec2.Client, newCidrIpv4 string) {
 			},
 		})
 		if err != nil {
-			log.Println("ERROR", "Unable to update rule description")
+			log.Println("ERROR", "Unable to update rule description due to", err)
 			continue
 		}
 		log.Println("Updated Description", aws.ToString(newSgRuleId))
@@ -139,5 +139,5 @@ func queryPublicIP() (string, error) {
 
 	raw, err := ioutil.ReadAll(resp.Body)
 
-	return string(raw), err
+	return strings.TrimSpace(string(raw)), err
 }

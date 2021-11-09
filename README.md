@@ -17,7 +17,7 @@ Usage of aws-sgrule:
 ## Install
 
 ```
-go get github.com/trung/aws-sgrule
+go get -u github.com/trung/aws-sgrule
 ```
 
 ## Example
