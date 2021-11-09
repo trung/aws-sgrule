@@ -129,7 +129,7 @@ func sgRuleUpdater(dryRun bool, client *ec2.Client, newCidrIpv4 string) {
 }
 
 func queryPublicIP() (string, error) {
-	resp, err := http.Get("https://bot.whatismyipaddress.com")
+	resp, err := http.Get("https://checkip.amazonaws.com")
 	if err != nil {
 		return "", err
 	}
